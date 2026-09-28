@@ -57,51 +57,52 @@ function toggleTheme() {
     }
 }
 
-
 /* ==========================================================================
-   2. MOBILE NAVIGATION MENU
+   MOBILE NAVIGATION TOGGLE
    ========================================================================== */
-function initMobileNav() {
-    const menuBtn = document.querySelector(".menu-btn");
-    const nav = document.querySelector("nav");
-
-    if (menuBtn && nav) {
-        menuBtn.addEventListener("click", (e) => {
-            e.stopPropagation();
-            toggleMenu();
-        });
-
-        // Close mobile nav when clicking anywhere outside
-        document.addEventListener("click", (e) => {
-            if (nav.classList.contains("nav-open") && !nav.contains(e.target) && e.target !== menuBtn) {
-                nav.classList.remove("nav-open");
-                menuBtn.innerHTML = "☰";
-            }
-        });
-
-        // Close mobile nav when link is clicked
-        const navLinks = nav.querySelectorAll("a");
-        navLinks.forEach(link => {
-            link.addEventListener("click", () => {
-                nav.classList.remove("nav-open");
-                if (menuBtn) menuBtn.innerHTML = "☰";
-            });
-        });
-    }
-}
 
 function toggleMenu() {
-    const nav = document.querySelector("nav");
+    // Tafuta nav au nav-links
+    const nav = document.querySelector("nav") || document.getElementById("nav-links");
     const menuBtn = document.querySelector(".menu-btn");
 
     if (nav) {
+        // Tumia class ya 'nav-open' au 'active'
         const isOpen = nav.classList.toggle("nav-open");
+        nav.classList.toggle("active");
+
         if (menuBtn) {
             menuBtn.innerHTML = isOpen ? "✕" : "☰";
         }
     }
 }
 
+// Hakikisha events zinajiunga mara tu ukurasa unapomaliza kuload
+document.addEventListener("DOMContentLoaded", () => {
+    const menuBtn = document.querySelector(".menu-btn");
+    const navLinks = document.querySelectorAll("nav a, #nav-links a");
+
+    if (menuBtn) {
+        // Tumia click na touchend kwa ajili ya usahihi wa simu (Touch devices)
+        menuBtn.addEventListener("click", (e) => {
+            e.stopPropagation();
+            toggleMenu();
+        });
+    }
+
+    // Funga menyu kiotomatiki mtumiaji akibonyeza link yoyote
+    navLinks.forEach(link => {
+        link.addEventListener("click", () => {
+            const nav = document.querySelector("nav") || document.getElementById("nav-links");
+            const btn = document.querySelector(".menu-btn");
+            if (nav) {
+                nav.classList.remove("nav-open");
+                nav.classList.remove("active");
+            }
+            if (btn) btn.innerHTML = "☰";
+        });
+    });
+});
 
 /* ==========================================================================
    3. EMERGENCY ALERT MODAL / ACTION
