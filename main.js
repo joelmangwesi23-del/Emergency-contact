@@ -519,3 +519,204 @@ document.addEventListener("DOMContentLoaded", function () {
     );
 
 });
+document.addEventListener("DOMContentLoaded", function () {
+
+    const button = document.getElementById("detectLocationBtn");
+    const result = document.getElementById("locationResult");
+    const mapContainer = document.getElementById("mapContainer");
+    const map = document.getElementById("locationMap");
+
+    if (!button) {
+        console.error("Detect My Location button not found.");
+        return;
+    }
+
+    button.addEventListener("click", function () {
+
+        if (!navigator.geolocation) {
+            result.innerHTML = `
+                <p>❌ Your browser does not support location detection.</p>
+            `;
+            return;
+        }
+
+        button.disabled = true;
+        button.innerHTML = "⏳ Detecting Location...";
+
+        result.innerHTML = `
+            <p>📍 Detecting your location...</p>
+        `;
+
+        navigator.geolocation.getCurrentPosition(
+
+            async function (position) {
+
+                const latitude = position.coords.latitude;
+                const longitude = position.coords.longitude;
+
+                try {
+
+                    // Reverse Geocoding
+                    const response = await fetch(
+                        `https://nominatim.openstreetmap.org/reverse?format=jsonv2&lat=${latitude}&lon=${longitude}&zoom=18&addressdetails=1`,
+                        {
+                            headers: {
+                                "Accept": "application/json"
+                            }
+                        }
+                    );
+
+                    if (!response.ok) {
+                        throw new Error("Unable to find location name.");
+                    }
+
+                    const data = await response.json();
+
+                    const address = data.address || {};
+
+                    // Get the most useful location names
+                    const road =
+                        address.road ||
+                        address.pedestrian ||
+                        address.neighbourhood ||
+                        "";
+
+                    const area =
+                        address.suburb ||
+                        address.city_district ||
+                        address.town ||
+                        address.village ||
+                        "";
+
+                    const city =
+                        address.city ||
+                        address.town ||
+                        address.municipality ||
+                        "";
+
+                    const country =
+                        address.country || "";
+
+                    // Build readable location name
+                    let locationName = "";
+
+                    if (road && area && city) {
+                        locationName =
+                            `${road}, ${area}, ${city}`;
+                    }
+                    else if (area && city) {
+                        locationName =
+                            `${area}, ${city}`;
+                    }
+                    else if (city) {
+                        locationName =
+                            city;
+                    }
+                    else if (area) {
+                        locationName =
+                            area;
+                    }
+                    else {
+                        locationName =
+                            data.display_name || "Location found";
+                    }
+
+                    result.innerHTML = `
+                        <div class="location-found">
+
+                            <h3>📍 Your Current Location</h3>
+
+                            <p class="location-name">
+                                ${locationName}
+                            </p>
+
+                            <p>
+                                <strong>Country:</strong>
+                                ${country}
+                            </p>
+
+                            <a
+                                href="https://www.google.com/maps?q=${latitude},${longitude}"
+                                target="_blank"
+                                class="map-link">
+                                🗺️ Open in Google Maps
+                            </a>
+
+                        </div>
+                    `;
+
+                    // Display map
+                    map.src =
+                        `https://www.google.com/maps?q=${latitude},${longitude}&output=embed`;
+
+                    mapContainer.style.display = "block";
+
+                }
+
+                catch (error) {
+
+                    console.error(error);
+
+                    result.innerHTML = `
+                        <p>⚠️ Location detected, but the location name could not be found.</p>
+
+                        <p>
+                            Please check your internet connection and try again.
+                        </p>
+                    `;
+                }
+
+                button.disabled = false;
+                button.innerHTML = "📍 Detect My Location";
+            },
+
+            function (error) {
+
+                button.disabled = false;
+                button.innerHTML = "📍 Detect My Location";
+
+                if (error.code === 1) {
+
+                    result.innerHTML = `
+                        <p>❌ Location permission was denied.</p>
+                        <p>
+                            Please allow location access and try again.
+                        </p>
+                    `;
+
+                }
+
+                else if (error.code === 2) {
+
+                    result.innerHTML = `
+                        <p>❌ Your location is currently unavailable.</p>
+                    `;
+
+                }
+
+                else if (error.code === 3) {
+
+                    result.innerHTML = `
+                        <p>❌ Location detection timed out.</p>
+                    `;
+
+                }
+
+                else {
+
+                    result.innerHTML = `
+                        <p>❌ Unable to detect your location.</p>
+                    `;
+                }
+
+            },
+
+            {
+                enableHighAccuracy: true,
+                timeout: 20000,
+                maximumAge: 0
+            }
+        );
+    });
+
+});
