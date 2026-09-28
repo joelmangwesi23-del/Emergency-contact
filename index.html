@@ -8,12 +8,869 @@
     <title>EmergencyConnect TZ</title>
 
     <link rel="stylesheet" href="css/style.css">
+
+    <style>
+
+        /* =========================================================
+           GLOBAL
+        ========================================================= */
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+        }
+
+        body {
+            font-family: Arial, Helvetica, sans-serif;
+            background: #f7f8fa;
+            color: #222;
+            line-height: 1.6;
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        a {
+            text-decoration: none;
+        }
+
+        button {
+            font-family: inherit;
+        }
+
+
+        /* =========================================================
+           DARK MODE
+        ========================================================= */
+
+         body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .navbar,
+        body.dark-mode .service-card,
+        body.dark-mode .contact-card,
+        body.dark-mode .location-section,
+        body.dark-mode .search-container,
+        body.dark-mode .how-section {
+            background-color: #1e1e1e !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .section-title h2,
+        body.dark-mode .service-card h3,
+        body.dark-mode .contact-card h3 {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode nav a {
+            color: #cccccc;
+        }
+
+        body.dark-mode .search-input,
+        body.dark-mode .select-input,
+        body.dark-mode .search-container input,
+        body.dark-mode .search-container select,
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-color: #444;
+        }
+
+        /* Theme Button in Navbar */
+        .theme-toggle-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.15);
+        }
+
+
+
+        /* =========================================================
+           NAVIGATION
+        ========================================================= */
+
+        .navbar {
+            height: 75px;
+            background: lightgray;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 0 7%;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 12px rgba(0,0,0,0.08);
+            transition: 0.3s;
+        }
+
+        .navbar.scrolled {
+            box-shadow: 0 5px 25px rgba(0,0,0,0.15);
+        }
+
+        .logo {
+            font-size: 22px;
+            font-weight: 700;
+            color: #d71920;
+        }
+
+        .logo span {
+            color: #222;
+        }
+
+        body.dark-mode .logo span {
+            color: #fff;
+        }
+
+        nav {
+            display: flex;
+            align-items: center;
+            gap: 25px;
+        }
+
+        nav a {
+            color: #444;
+            font-size: 14px;
+            font-weight: 600;
+            transition: 0.3s;
+        }
+
+        nav a:hover,
+        nav a.active {
+            color: #d71920;
+        }
+
+        .menu-btn {
+            display: none;
+            border: none;
+            background: transparent;
+            font-size: 25px;
+            cursor: pointer;
+        }
+
+
+        /* =========================================================
+           HERO SECTION
+        ========================================================= */
+
+        .hero {
+            min-height: 620px;
+            padding: 90px 7%;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 50px;
+            position: relative;
+            overflow: hidden;
+
+            /*
+              MAIN HERO BACKGROUND
+              Hospital / Emergency image
+            */
+
+            background:
+                linear-gradient(
+                    90deg,
+                    rgba(8, 18, 35, 0.94) 0%,
+                    rgba(11, 27, 47, 0.88) 42%,
+                    rgba(150, 15, 25, 0.62) 100%
+                ),
+                url("https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=2000&q=85")
+                center center / cover no-repeat;
+
+            color: white;
+        }
+
+
+        /* Decorative medical pattern */
+
+        .hero::before {
+            content: "";
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            right: -180px;
+            top: -150px;
+            border: 2px solid rgba(255,255,255,0.12);
+            border-radius: 50%;
+            box-shadow:
+                0 0 0 40px rgba(255,255,255,0.03),
+                0 0 0 80px rgba(255,255,255,0.025),
+                0 0 0 120px rgba(255,255,255,0.02);
+        }
+
+
+        .hero::after {
+            content: "+  +  +  +  +  +";
+            position: absolute;
+            right: 7%;
+            bottom: 35px;
+            color: rgba(255,255,255,0.12);
+            font-size: 35px;
+            letter-spacing: 22px;
+            transform: rotate(-10deg);
+        }
+
+
+        /* Decorative red glow */
+
+        .hero-glow {
+            position: absolute;
+            width: 420px;
+            height: 420px;
+            background: rgba(215,25,32,0.20);
+            border-radius: 50%;
+            filter: blur(80px);
+            right: 12%;
+            top: 20%;
+        }
+
+
+        .hero-content {
+            max-width: 650px;
+            position: relative;
+            z-index: 5;
+        }
+
+
+        /* Badge */
+
+        .badge {
+            display: inline-block;
+            background: rgba(215,25,32,0.95);
+            color: #ffffff;
+            padding: 9px 18px;
+            border-radius: 30px;
+            font-size: 13px;
+            font-weight: 700;
+            margin-bottom: 20px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
+            border: 1px solid rgba(255,255,255,0.25);
+        }
+
+
+        /* Hero heading */
+
+        .hero h1 {
+            font-size: 56px;
+            line-height: 1.1;
+            margin-bottom: 22px;
+            color: #ffffff;
+            text-shadow: 0 3px 12px rgba(0,0,0,0.45);
+        }
+
+        .hero h1 span {
+            display: block;
+            color: #ff5252;
+        }
+
+
+        .hero p {
+            max-width: 590px;
+            font-size: 18px;
+            color: #edf2f7;
+            margin-bottom: 32px;
+            text-shadow: 0 2px 5px rgba(0,0,0,0.5);
+        }
+
+
+        /* Buttons */
+
+        .hero-buttons {
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 14px 23px;
+            border-radius: 8px;
+            font-size: 15px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .primary-btn {
+            background: #d71920;
+            color: white;
+            box-shadow: 0 7px 20px rgba(215,25,32,0.45);
+        }
+
+        .primary-btn:hover {
+            background: #b51218;
+            transform: translateY(-3px);
+            box-shadow: 0 10px 25px rgba(215,25,32,0.55);
+        }
+
+        .secondary-btn {
+            background: rgba(255,255,255,0.12);
+            color: #ffffff;
+            border: 1px solid rgba(255,255,255,0.75);
+            backdrop-filter: blur(8px);
+        }
+
+        .secondary-btn:hover {
+            background: lightgray;
+            color: #d71920;
+            transform: translateY(-3px);
+        }
+
+
+        /* =========================================================
+           HERO MEDICAL ICON
+        ========================================================= */
+
+        .hero-icon {
+            padding-right: 4%;
+            position: relative;
+            z-index: 5;
+        }
+
+        .emergency-circle {
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+
+            background:
+                linear-gradient(
+                    145deg,
+                    #ef3038,
+                    #b50910
+                );
+
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            font-size: 90px;
+
+            box-shadow:
+                0 0 0 12px rgba(255,255,255,0.12),
+                0 0 0 25px rgba(255,255,255,0.06),
+                0 25px 60px rgba(0,0,0,0.4);
+
+            animation: pulse 2.5s infinite;
+            position: relative;
+        }
+
+
+        /* White medical cross behind icon */
+
+        .emergency-circle::before {
+            content: "";
+            position: absolute;
+            width: 75px;
+            height: 25px;
+            background: rgba(255,255,255,0.16);
+            border-radius: 5px;
+        }
+
+        .emergency-circle::after {
+            content: "";
+            position: absolute;
+            width: 25px;
+            height: 75px;
+            background: rgba(255,255,255,0.16);
+            border-radius: 5px;
+        }
+
+
+        @keyframes pulse {
+
+            0% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.05);
+            }
+
+            100% {
+                transform: scale(1);
+            }
+
+        }
+
+
+        /* =========================================================
+           FLOATING DECORATIONS
+        ========================================================= */
+
+        .hero-decoration {
+            position: absolute;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.15);
+            pointer-events: none;
+        }
+
+        .decoration-one {
+            width: 90px;
+            height: 90px;
+            left: 3%;
+            top: 15%;
+        }
+
+        .decoration-two {
+            width: 40px;
+            height: 40px;
+            left: 42%;
+            top: 15%;
+            background: rgba(255,255,255,0.04);
+        }
+
+        .decoration-three {
+            width: 120px;
+            height: 120px;
+            left: 38%;
+            bottom: -50px;
+            background: rgba(215,25,32,0.08);
+        }
+
+
+        /* =========================================================
+           QUICK EMERGENCY
+        ========================================================= */
+
+        .quick-emergency {
+            margin: 60px 7%;
+            padding: 35px 40px;
+            background: #151515;
+            color: white;
+            border-radius: 15px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 25px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+        }
+
+        .quick-emergency h2 {
+            font-size: 25px;
+            margin-bottom: 5px;
+        }
+
+        .quick-emergency p {
+            color: #aaa;
+        }
+
+        .emergency-btn {
+            border: none;
+            background: #d71920;
+            color: white;
+            padding: 16px 25px;
+            border-radius: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: 0.3s;
+        }
+
+        .emergency-btn:hover {
+            background: #ff252d;
+            transform: scale(1.03);
+        }
+
+
+        /* =========================================================
+           SERVICES
+        ========================================================= */
+
+        .services-section,
+        .how-section {
+            padding: 70px 7%;
+        }
+
+        .section-title {
+            text-align: center;
+            max-width: 650px;
+            margin: 0 auto 45px;
+        }
+
+        .section-title span {
+            color: #d71920;
+            font-size: 13px;
+            font-weight: 700;
+            letter-spacing: 2px;
+        }
+
+        .section-title h2 {
+            font-size: 34px;
+            margin: 8px 0;
+            color: #181818;
+        }
+
+        .section-title p {
+            color: #777;
+            font-size: 15px;
+        }
+
+        .service-grid {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 25px;
+        }
+
+        .service-card {
+            background: lightgray;
+            padding: 30px 25px;
+            border-radius: 14px;
+            text-align: center;
+            border: 1px solid #eeeeee;
+            box-shadow: 0 5px 20px rgba(0,0,0,0.05);
+            transition: 0.3s;
+        }
+
+        .service-card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 15px 35px rgba(0,0,0,0.10);
+        }
+
+        .service-icon {
+            width: 65px;
+            height: 65px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 30px;
+        }
+
+        .police {
+            background: #e8f0ff;
+        }
+
+        .ambulance {
+            background: #ffe8e8;
+        }
+
+        .fire {
+            background: #fff0dc;
+        }
+
+        .hospital {
+            background: #e6f8ee;
+        }
+
+        .service-card h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+        }
+
+        .service-card p {
+            color: #777;
+            font-size: 14px;
+            margin-bottom: 20px;
+        }
+
+        .call-btn {
+            display: inline-block;
+            background: #d71920;
+            color: white;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .call-btn:hover {
+            background: #a90f15;
+        }
+
+        .view-btn {
+            display: inline-block;
+            background: #eeeeee;
+            color: #333;
+            padding: 10px 18px;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 700;
+            transition: 0.3s;
+        }
+
+        .view-btn:hover {
+            background: #222;
+            color: white;
+        }
+
+
+        /* =========================================================
+           HOW IT WORKS
+        ========================================================= */
+
+        .how-section {
+            background: white;
+        }
+
+        .steps {
+            max-width: 1000px;
+            margin: auto;
+            display: grid;
+            grid-template-columns: repeat(3,1fr);
+            gap: 30px;
+        }
+
+        .step {
+            text-align: center;
+            padding: 30px;
+        }
+
+        .step-number {
+            width: 55px;
+            height: 55px;
+            margin: 0 auto 20px;
+            border-radius: 50%;
+            background: #d71920;
+            color: white;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 700;
+        }
+
+        .step h3 {
+            margin-bottom: 8px;
+        }
+
+        .step p {
+            color: #777;
+            font-size: 14px;
+        }
+
+
+        /* =========================================================
+           FOOTER
+        ========================================================= */
+
+        footer {
+            background: #111111;
+            color: white;
+            padding: 50px 7% 20px;
+        }
+
+        .footer-content {
+            display: flex;
+            justify-content: space-between;
+            gap: 50px;
+            padding-bottom: 30px;
+        }
+
+        .footer-content h2 {
+            margin-bottom: 10px;
+        }
+
+        .footer-content p {
+            color: #aaa;
+            max-width: 400px;
+        }
+
+        .footer-links {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .footer-links h3 {
+            margin-bottom: 5px;
+        }
+
+        .footer-links a {
+            color: #aaa;
+            font-size: 14px;
+            transition: 0.3s;
+        }
+
+        .footer-links a:hover {
+            color: white;
+        }
+
+        .copyright {
+            border-top: 1px solid #333;
+            padding-top: 20px;
+            text-align: center;
+            color: #777;
+            font-size: 13px;
+        }
+
+
+        /* =========================================================
+           RESPONSIVE
+        ========================================================= */
+
+        @media (max-width:1000px) {
+
+            .hero h1 {
+                font-size: 42px;
+            }
+
+            .service-grid {
+                grid-template-columns: repeat(2,1fr);
+            }
+
+            .emergency-circle {
+                width: 210px;
+                height: 210px;
+                font-size: 75px;
+            }
+
+        }
+
+
+        @media (max-width:700px) {
+
+            .navbar {
+                padding: 0 5%;
+            }
+
+            nav {
+                display: none;
+                position: absolute;
+                top: 75px;
+                right: 0;
+                width: 100%;
+                background: white;
+                padding: 20px;
+                flex-direction: column;
+                gap: 18px;
+                box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
+            nav.show,
+            nav.nav-open {
+                display: flex !important;
+            }
+
+            nav a {
+                text-align: center;
+            }
+
+            .menu-btn {
+                display: block;
+            }
+
+
+            .hero {
+                flex-direction: column;
+                text-align: center;
+                padding: 70px 5%;
+                gap: 45px;
+
+                background-position: center;
+            }
+
+            .hero-content {
+                max-width: 100%;
+            }
+
+            .hero h1 {
+                font-size: 36px;
+            }
+
+            .hero p {
+                font-size: 16px;
+            }
+
+            .hero-buttons {
+                justify-content: center;
+            }
+
+            .hero-icon {
+                padding-right: 0;
+            }
+
+            .emergency-circle {
+                width: 180px;
+                height: 180px;
+                font-size: 65px;
+            }
+
+            .quick-emergency {
+                margin: 40px 5%;
+                padding: 30px 20px;
+                flex-direction: column;
+                text-align: center;
+            }
+
+            .services-section,
+            .how-section {
+                padding: 60px 5%;
+            }
+
+            .section-title h2 {
+                font-size: 28px;
+            }
+
+            .service-grid,
+            .steps {
+                grid-template-columns: 1fr;
+            }
+
+            .footer-content {
+                flex-direction: column;
+            }
+
+            .hero::after {
+                display: none;
+            }
+
+        }
+
+
+        @media (max-width:400px) {
+
+            .logo {
+                font-size: 18px;
+            }
+
+            .hero h1 {
+                font-size: 30px;
+            }
+
+            .btn {
+                width: 100%;
+                text-align: center;
+            }
+
+            .emergency-circle {
+                width: 150px;
+                height: 150px;
+                font-size: 55px;
+            }
+
+        }
+
+    </style>
 </head>
 
-<body>
-    
 
-    <!-- ================= NAVIGATION ================= -->
+<body>
+
+
+    <!-- =========================================================
+         NAVIGATION
+    ========================================================= -->
+
     <header class="navbar">
 
         <div class="logo">
@@ -34,12 +891,26 @@
     </header>
 
 
-    <!-- ================= HERO SECTION ================= -->
+    <!-- =========================================================
+         HERO
+    ========================================================= -->
+
     <section class="hero">
+
+        <!-- Decorative glow -->
+        <div class="hero-glow"></div>
+
+        <!-- Decorative circles -->
+        <div class="hero-decoration decoration-one"></div>
+        <div class="hero-decoration decoration-two"></div>
+        <div class="hero-decoration decoration-three"></div>
+
 
         <div class="hero-content">
 
-            <span class="badge">Emergency Services Tanzania</span>
+            <span class="badge">
+                🚑 Emergency Services Tanzania
+            </span>
 
             <h1>
                 Emergency Help
@@ -49,7 +920,10 @@
             <p>
                 Quickly find emergency services, hospitals,
                 police stations and important contacts in your area.
+                EmergencyConnect TZ helps you reach the right
+                assistance when every second matters.
             </p>
+
 
             <div class="hero-buttons">
 
@@ -65,125 +939,181 @@
 
         </div>
 
+
+        <!-- Emergency Icon -->
+
         <div class="hero-icon">
+
             <div class="emergency-circle">
                 🚨
             </div>
+
         </div>
 
     </section>
 
 
-    <!-- ================= EMERGENCY BUTTON ================= -->
+    <!-- =========================================================
+         QUICK EMERGENCY
+    ========================================================= -->
+
     <section class="quick-emergency">
 
         <div>
-            <h2>Need Emergency Assistance?</h2>
+
+            <h2>
+                Need Emergency Assistance?
+            </h2>
+
             <p>
                 Access important emergency services quickly.
             </p>
+
         </div>
 
-        <button class="emergency-btn" onclick="showEmergencyMessage()">
+
+        <button
+            class="emergency-btn"
+            onclick="showEmergencyMessage()">
+
             🚨 GET EMERGENCY HELP
+
         </button>
 
     </section>
 
 
-    <!-- ================= SERVICES ================= -->
+    <!-- =========================================================
+         SERVICES
+    ========================================================= -->
+
     <section class="services-section">
 
         <div class="section-title">
+
             <span>QUICK ACCESS</span>
-            <h2>Emergency Services</h2>
+
+            <h2>
+                Emergency Services
+            </h2>
+
             <p>
                 Select a service to get emergency assistance.
             </p>
+
         </div>
 
 
         <div class="service-grid">
 
-            <!-- Police -->
+
+            <!-- POLICE -->
+
             <div class="service-card">
 
                 <div class="service-icon police">
                     🚓
                 </div>
 
-                <h3>Police</h3>
+                <h3>
+                    Police
+                </h3>
 
                 <p>
                     Contact police services for security
                     and law enforcement emergencies.
                 </p>
 
-                <a href="tel:112" class="call-btn">
+                <a
+                    href="tel:112"
+                    class="call-btn">
+
                     📞 Call Now
+
                 </a>
 
             </div>
 
 
-            <!-- Ambulance -->
+            <!-- AMBULANCE -->
+
             <div class="service-card">
 
                 <div class="service-icon ambulance">
                     🚑
                 </div>
 
-                <h3>Ambulance</h3>
+                <h3>
+                    Ambulance
+                </h3>
 
                 <p>
                     Get medical emergency assistance
                     when immediate help is required.
                 </p>
 
-                <a href="tel:112" class="call-btn">
+                <a
+                    href="tel:112"
+                    class="call-btn">
+
                     📞 Call Now
+
                 </a>
 
             </div>
 
 
-            <!-- Fire -->
+            <!-- FIRE -->
+
             <div class="service-card">
 
                 <div class="service-icon fire">
                     🚒
                 </div>
 
-                <h3>Fire & Rescue</h3>
+                <h3>
+                    Fire & Rescue
+                </h3>
 
                 <p>
                     Contact fire and rescue services
                     during fire or rescue emergencies.
                 </p>
 
-                <a href="tel:112" class="call-btn">
+                <a
+                    href="tel:112"
+                    class="call-btn">
+
                     📞 Call Now
+
                 </a>
 
             </div>
 
 
-            <!-- Hospital -->
+            <!-- HOSPITAL -->
+
             <div class="service-card">
 
                 <div class="service-icon hospital">
                     🏥
                 </div>
 
-                <h3>Hospitals</h3>
+                <h3>
+                    Hospitals
+                </h3>
 
                 <p>
                     Find hospitals and medical facilities
                     available near your location.
                 </p>
 
-                <a href="hospitals.html" class="view-btn">
+                <a
+                    href="hospitals.html"
+                    class="view-btn">
+
                     View Hospitals →
+
                 </a>
 
             </div>
@@ -193,25 +1123,35 @@
     </section>
 
 
-    <!-- ================= HOW IT WORKS ================= -->
+    <!-- =========================================================
+         HOW IT WORKS
+    ========================================================= -->
+
     <section class="how-section">
 
         <div class="section-title">
 
             <span>SIMPLE & FAST</span>
 
-            <h2>How EmergencyConnect Works</h2>
+            <h2>
+                How EmergencyConnect Works
+            </h2>
 
         </div>
 
 
         <div class="steps">
 
+
             <div class="step">
 
-                <div class="step-number">01</div>
+                <div class="step-number">
+                    01
+                </div>
 
-                <h3>Choose a Service</h3>
+                <h3>
+                    Choose a Service
+                </h3>
 
                 <p>
                     Select the emergency service
@@ -223,9 +1163,13 @@
 
             <div class="step">
 
-                <div class="step-number">02</div>
+                <div class="step-number">
+                    02
+                </div>
 
-                <h3>Find Help</h3>
+                <h3>
+                    Find Help
+                </h3>
 
                 <p>
                     Find nearby emergency services
@@ -237,9 +1181,13 @@
 
             <div class="step">
 
-                <div class="step-number">03</div>
+                <div class="step-number">
+                    03
+                </div>
 
-                <h3>Get Assistance</h3>
+                <h3>
+                    Get Assistance
+                </h3>
 
                 <p>
                     Call or contact the appropriate
@@ -253,32 +1201,58 @@
     </section>
 
 
-    <!-- ================= FOOTER ================= -->
+    <!-- =========================================================
+         FOOTER
+    ========================================================= -->
+
     <footer>
 
         <div class="footer-content">
 
+
             <div>
-                <h2>🚨 EmergencyConnect TZ</h2>
+
+                <h2>
+                    🚨 EmergencyConnect TZ
+                </h2>
 
                 <p>
                     Connecting people with emergency
                     services quickly and efficiently.
                 </p>
+
             </div>
 
 
             <div class="footer-links">
 
-                <h3>Quick Links</h3>
+                <h3>
+                    Quick Links
+                </h3>
 
-                <a href="services.html">Emergency Services</a>
-                <a href="nearby.html">Nearby Help</a>
-                <a href="hospitals.html">Hospitals</a>
-                <a href="contacts.html">Emergency Contacts</a>
-                <a href="about.html">About</a>
-                <a href="index.html">Home</a>
-                <a href="report.html">Report Emergency </a>
+                <a href="services.html">
+                    Emergency Services
+                </a>
+
+                <a href="nearby.html">
+                    Nearby Help
+                </a>
+
+                <a href="hospitals.html">
+                    Hospitals
+                </a>
+
+                <a href="contacts.html">
+                    Emergency Contacts
+                </a>
+
+                <a href="about.html">
+                    About
+                </a>
+
+                <a href="index.html">
+                    Home
+                </a>
 
             </div>
 
@@ -287,7 +1261,8 @@
 
         <div class="copyright">
 
-            © 2026 EmergencyConnect TZ.
+            © <span id="year">2026</span>
+            EmergencyConnect TZ.
             All rights reserved.
 
         </div>
@@ -295,1304 +1270,136 @@
     </footer>
 
 
-    <script src="main.js"></script>
-<style>
-    /* ==========================================================================
-   DARK MODE STYLES & TRANSITIONS
-   ========================================================================== */
-body {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
+    <!-- =========================================================
+         JAVASCRIPT
+    ========================================================= -->
 
-body.dark-mode {
-    background-color: #121212;
-    color: #e0e0e0;
-}
+    <script>
 
-body.dark-mode .navbar,
-body.dark-mode .service-card,
-body.dark-mode .contact-card,
-body.dark-mode .location-section,
-body.dark-mode .search-container,
-body.dark-mode .how-section {
-    background-color: #1e1e1e !important;
-    border-color: #333333 !important;
-    color: #ffffff !important;
-}
+        /* MOBILE MENU */
 
-body.dark-mode .hero {
-    background: linear-gradient(135deg, #181818, #2a080a) !important;
-}
+        function toggleMenu() {
 
-body.dark-mode .hero h1,
-body.dark-mode .section-title h2,
-body.dark-mode .service-card h3,
-body.dark-mode .contact-card h3 {
-    color: #ffffff !important;
-}
-
-body.dark-mode nav a {
-    color: #cccccc;
-}
-
-body.dark-mode .search-input,
-body.dark-mode .select-input,
-body.dark-mode .search-container input,
-body.dark-mode .search-container select,
-body.dark-mode .form-group input,
-body.dark-mode .form-group select,
-body.dark-mode .form-group textarea {
-    background-color: #2a2a2a;
-    color: #ffffff;
-    border-color: #444;
-}
-
-/* Theme Button in Navbar */
-.theme-toggle-btn {
-    background: transparent;
-    border: none;
-    font-size: 20px;
-    cursor: pointer;
-    padding: 5px 10px;
-    border-radius: 50%;
-    transition: transform 0.2s;
-}
-
-.theme-toggle-btn:hover {
-    transform: scale(1.15);
-}
-
-/* ==========================================================================
-   MOBILE NAV TOGGLE CLASSES
-   ========================================================================== */
-@media (max-width: 700px) {
-    nav {
-        display: none;
-    }
-    nav.nav-open {
-        display: flex !important;
-    }
-}
-
-/* ==========================================================================
-   EMERGENCY MODAL STYLES
-   ========================================================================== */
-.emergency-modal {
-    display: none;
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0, 0, 0, 0.75);
-    z-index: 2000;
-    align-items: center;
-    justify-content: center;
-    padding: 20px;
-    backdrop-filter: blur(4px);
-}
-
-.emergency-modal-content {
-    background: #ffffff;
-    padding: 30px;
-    border-radius: 16px;
-    max-width: 480px;
-    width: 100%;
-    text-align: center;
-    position: relative;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-    animation: popIn 0.3s ease-out;
-}
-
-body.dark-mode .emergency-modal-content {
-    background: #1e1e1e;
-    color: #fff;
-}
-
-.close-modal {
-    position: absolute;
-    top: 15px;
-    right: 20px;
-    font-size: 28px;
-    cursor: pointer;
-    color: #888;
-}
-
-.close-modal:hover { color: #d71920; }
-
-.modal-icon { font-size: 50px; margin-bottom: 10px; }
-
-.modal-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    margin-top: 20px;
-}
-
-.modal-btn {
-    padding: 14px;
-    border-radius: 8px;
-    font-weight: bold;
-    color: white;
-    text-decoration: none;
-    transition: 0.3s;
-}
-
-.modal-btn.primary { background: #d71920; }
-.modal-btn.fire { background: #e65100; }
-.modal-btn.medical { background: #2e7d32; }
-.modal-btn.child { background: #6a1b9a; }
-
-.modal-btn:hover { opacity: 0.9; transform: translateY(-2px); }
-
-@keyframes popIn {
-    from { transform: scale(0.8); opacity: 0; }
-    to { transform: scale(1); opacity: 1; }
-}
-/* ==============================
-   GLOBAL STYLES
-================================= */
-
-* {
-    margin: 0;
-    padding: 0;
-    box-sizing: border-box;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-body {
-    font-family: Arial, Helvetica, sans-serif;
-    background: #f7f8fa;
-    color: #222;
-    line-height: 1.6;
-}
-
-a {
-    text-decoration: none;
-}
-
-button {
-    font-family: inherit;
-}
-
-
-/* ==============================
-   NAVIGATION BAR
-================================= */
-
-.navbar {
-    height: 75px;
-    background: #ffffff;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    padding: 0 7%;
-
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-
-    box-shadow: 0 2px 12px rgba(0, 0, 0, 0.08);
-}
-
-
-/* LOGO */
-
-.logo {
-    font-size: 22px;
-    font-weight: 700;
-    color: #d71920;
-}
-
-.logo span {
-    color: #222;
-}
-
-
-/* NAV LINKS */
-
-nav {
-    display: flex;
-    align-items: center;
-    gap: 25px;
-}
-
-nav a {
-    color: #444;
-    font-size: 14px;
-    font-weight: 600;
-
-    transition: 0.3s;
-}
-
-nav a:hover,
-nav a.active {
-    color: #d71920;
-}
-
-
-/* MOBILE MENU BUTTON */
-
-.menu-btn {
-    display: none;
-
-    border: none;
-    background: transparent;
-
-    font-size: 25px;
-    cursor: pointer;
-}
-
-
-/* ==============================
-   HERO SECTION
-================================= */
-
-.hero {
-    min-height: 520px;
-
-    padding: 80px 7%;
-
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    gap: 50px;
-
-    background: linear-gradient(
-        135deg,
-        #ffffff,
-        #fff4f4
-    );
-}
-
-
-/* HERO TEXT */
-
-.hero-content {
-    max-width: 650px;
-}
-
-.badge {
-    display: inline-block;
-
-    background: #ffe5e5;
-    color: #c1121f;
-
-    padding: 8px 15px;
-
-    border-radius: 30px;
-
-    font-size: 13px;
-    font-weight: 700;
-
-    margin-bottom: 20px;
-}
-
-.hero h1 {
-    font-size: 55px;
-
-    line-height: 1.1;
-
-    margin-bottom: 25px;
-
-    color: #181818;
-}
-
-.hero h1 span {
-    display: block;
-
-    color: #d71920;
-}
-
-.hero p {
-    max-width: 570px;
-
-    font-size: 18px;
-
-    color: #666;
-
-    margin-bottom: 30px;
-}
-
-
-/* HERO BUTTONS */
-
-.hero-buttons {
-    display: flex;
-    gap: 15px;
-
-    flex-wrap: wrap;
-}
-
-.btn {
-    display: inline-block;
-
-    padding: 14px 22px;
-
-    border-radius: 8px;
-
-    font-size: 15px;
-    font-weight: 700;
-
-    transition: 0.3s;
-}
-
-
-/* PRIMARY BUTTON */
-
-.primary-btn {
-    background: #d71920;
-    color: white;
-
-    box-shadow: 0 6px 15px rgba(215, 25, 32, 0.25);
-}
-
-.primary-btn:hover {
-    background: #b51218;
-
-    transform: translateY(-2px);
-}
-
-
-/* SECONDARY BUTTON */
-
-.secondary-btn {
-    background: white;
-
-    color: #d71920;
-
-    border: 2px solid #d71920;
-}
-
-.secondary-btn:hover {
-    background: #d71920;
-
-    color: white;
-}
-
-
-/* ==============================
-   HERO EMERGENCY ICON
-================================= */
-
-.hero-icon {
-    padding-right: 5%;
-}
-
-.emergency-circle {
-
-    width: 260px;
-    height: 260px;
-
-    border-radius: 50%;
-
-    background: #d71920;
-
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    font-size: 100px;
-
-    box-shadow:
-        0 0 0 20px #ffe5e5,
-        0 0 0 40px #fff2f2;
-
-    animation: pulse 2s infinite;
-}
-
-
-/* PULSE ANIMATION */
-
-@keyframes pulse {
-
-    0% {
-        transform: scale(1);
-    }
-
-    50% {
-        transform: scale(1.05);
-    }
-
-    100% {
-        transform: scale(1);
-    }
-
-}
-
-
-/* ==============================
-   QUICK EMERGENCY SECTION
-================================= */
-
-.quick-emergency {
-
-    margin: 60px 7%;
-
-    padding: 35px 40px;
-
-    background: #151515;
-
-    color: white;
-
-    border-radius: 15px;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: space-between;
-
-    gap: 25px;
-}
-
-.quick-emergency h2 {
-    font-size: 25px;
-
-    margin-bottom: 5px;
-}
-
-.quick-emergency p {
-    color: #aaa;
-}
-
-
-/* EMERGENCY BUTTON */
-
-.emergency-btn {
-
-    border: none;
-
-    background: #d71920;
-
-    color: white;
-
-    padding: 16px 25px;
-
-    border-radius: 8px;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    cursor: pointer;
-
-    transition: 0.3s;
-}
-
-.emergency-btn:hover {
-
-    background: #ff252d;
-
-    transform: scale(1.03);
-}
-
-
-/* ==============================
-   SECTION TITLE
-================================= */
-
-.services-section,
-.how-section {
-
-    padding: 70px 7%;
-}
-
-.section-title {
-
-    text-align: center;
-
-    max-width: 650px;
-
-    margin: 0 auto 45px;
-}
-
-.section-title span {
-
-    color: #d71920;
-
-    font-size: 13px;
-
-    font-weight: 700;
-
-    letter-spacing: 2px;
-}
-
-.section-title h2 {
-
-    font-size: 34px;
-
-    margin: 8px 0;
-
-    color: #181818;
-}
-
-.section-title p {
-
-    color: #777;
-
-    font-size: 15px;
-}
-
-
-/* ==============================
-   SERVICE CARDS
-================================= */
-
-.service-grid {
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(4, 1fr);
-
-    gap: 25px;
-}
-
-.service-card {
-
-    background: #ffffff;
-
-    padding: 30px 25px;
-
-    border-radius: 14px;
-
-    text-align: center;
-
-    border: 1px solid #eeeeee;
-
-    box-shadow:
-        0 5px 20px rgba(0, 0, 0, 0.05);
-
-    transition: 0.3s;
-}
-
-.service-card:hover {
-
-    transform: translateY(-8px);
-
-    box-shadow:
-        0 15px 35px rgba(0, 0, 0, 0.10);
-}
-
-
-/* SERVICE ICON */
-
-.service-icon {
-
-    width: 65px;
-    height: 65px;
-
-    margin: 0 auto 20px;
-
-    border-radius: 50%;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-size: 30px;
-}
-
-
-/* ICON BACKGROUNDS */
-
-.police {
-    background: #e8f0ff;
-}
-
-.ambulance {
-    background: #ffe8e8;
-}
-
-.fire {
-    background: #fff0dc;
-}
-
-.hospital {
-    background: #e6f8ee;
-}
-
-
-/* SERVICE TEXT */
-
-.service-card h3 {
-
-    font-size: 20px;
-
-    margin-bottom: 10px;
-}
-
-.service-card p {
-
-    color: #777;
-
-    font-size: 14px;
-
-    margin-bottom: 20px;
-}
-
-
-/* CALL BUTTON */
-
-.call-btn {
-
-    display: inline-block;
-
-    background: #d71920;
-
-    color: white;
-
-    padding: 10px 18px;
-
-    border-radius: 6px;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    transition: 0.3s;
-}
-
-.call-btn:hover {
-
-    background: #a90f15;
-}
-
-
-/* VIEW BUTTON */
-
-.view-btn {
-
-    display: inline-block;
-
-    background: #eeeeee;
-
-    color: #333;
-
-    padding: 10px 18px;
-
-    border-radius: 6px;
-
-    font-size: 14px;
-
-    font-weight: 700;
-
-    transition: 0.3s;
-}
-
-.view-btn:hover {
-
-    background: #222;
-
-    color: white;
-}
-
-
-/* ==============================
-   HOW IT WORKS
-================================= */
-
-.how-section {
-
-    background: white;
-}
-
-.steps {
-
-    max-width: 1000px;
-
-    margin: auto;
-
-    display: grid;
-
-    grid-template-columns:
-        repeat(3, 1fr);
-
-    gap: 30px;
-}
-
-.step {
-
-    text-align: center;
-
-    padding: 30px;
-}
-
-.step-number {
-
-    width: 55px;
-    height: 55px;
-
-    margin: 0 auto 20px;
-
-    border-radius: 50%;
-
-    background: #d71920;
-
-    color: white;
-
-    display: flex;
-
-    align-items: center;
-
-    justify-content: center;
-
-    font-weight: 700;
-}
-
-.step h3 {
-
-    margin-bottom: 8px;
-}
-
-.step p {
-
-    color: #777;
-
-    font-size: 14px;
-}
-
-
-/* ==============================
-   FOOTER
-================================= */
-
-footer {
-
-    background: #111111;
-
-    color: white;
-
-    padding: 50px 7% 20px;
-}
-
-.footer-content {
-
-    display: flex;
-
-    justify-content: space-between;
-
-    gap: 50px;
-
-    padding-bottom: 30px;
-}
-
-.footer-content h2 {
-
-    margin-bottom: 10px;
-}
-
-.footer-content p {
-
-    color: #aaa;
-
-    max-width: 400px;
-}
-
-
-/* FOOTER LINKS */
-
-.footer-links {
-
-    display: flex;
-
-    flex-direction: column;
-
-    gap: 8px;
-}
-
-.footer-links h3 {
-
-    margin-bottom: 5px;
-}
-
-.footer-links a {
-
-    color: #aaa;
-
-    font-size: 14px;
-
-    transition: 0.3s;
-}
-
-.footer-links a:hover {
-
-    color: white;
-}
-
-
-/* COPYRIGHT */
-
-.copyright {
-
-    border-top: 1px solid #333;
-
-    padding-top: 20px;
-
-    text-align: center;
-
-    color: #777;
-
-    font-size: 13px;
-}
-
-
-/* ==============================
-   TABLET
-================================= */
-
-@media (max-width: 1000px) {
-
-    .hero h1 {
-        font-size: 45px;
-    }
-
-    .service-grid {
-
-        grid-template-columns:
-            repeat(2, 1fr);
-    }
-
-}
-
-
-/* ==============================
-   MOBILE
-================================= */
-
-@media (max-width: 700px) {
-
-    .navbar {
-
-        padding: 0 5%;
-    }
-
-    nav {
-
-        display: none;
-
-        position: absolute;
-
-        top: 75px;
-
-        right: 0;
-
-        width: 100%;
-
-        background: white;
-
-        padding: 20px;
-
-        flex-direction: column;
-
-        gap: 18px;
-
-        box-shadow:
-            0 5px 15px rgba(0,0,0,0.1);
-    }
-
-    nav a {
-        text-align: center;
-    }
-
-    .menu-btn {
-        display: block;
-    }
-
-
-    /* HERO */
-
-    .hero {
-
-        flex-direction: column;
-
-        text-align: center;
-
-        padding: 60px 5%;
-
-        gap: 60px;
-    }
-
-    .hero-content {
-
-        max-width: 100%;
-    }
-
-    .hero h1 {
-
-        font-size: 38px;
-    }
-
-    .hero p {
-
-        font-size: 16px;
-    }
-
-    .hero-buttons {
-
-        justify-content: center;
-    }
-
-    .hero-icon {
-
-        padding-right: 0;
-    }
-
-    .emergency-circle {
-
-        width: 190px;
-        height: 190px;
-
-        font-size: 70px;
-    }
-
-
-    /* QUICK EMERGENCY */
-
-    .quick-emergency {
-
-        margin: 40px 5%;
-
-        padding: 30px 20px;
-
-        flex-direction: column;
-
-        text-align: center;
-    }
-
-
-    /* SERVICES */
-
-    .services-section,
-    .how-section {
-
-        padding: 60px 5%;
-    }
-
-    .section-title h2 {
-
-        font-size: 28px;
-    }
-
-    .service-grid {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    /* STEPS */
-
-    .steps {
-
-        grid-template-columns: 1fr;
-    }
-
-
-    /* FOOTER */
-
-    .footer-content {
-
-        flex-direction: column;
-    }
-
-}
-
-
-/* ==============================
-   SMALL PHONES
-================================= */
-
-@media (max-width: 400px) {
-
-    .logo {
-
-        font-size: 18px;
-    }
-
-    .hero h1 {
-
-        font-size: 32px;
-    }
-
-    .btn {
-
-        width: 100%;
-
-        text-align: center;
-    }
-
-    .emergency-circle {
-
-        width: 160px;
-        height: 160px;
-
-        font-size: 60px;
-    }
-
-}
-</style>
-<script /* =========================================
-   EMERGENCYCONNECT TZ
-   MAIN JAVASCRIPT
-========================================= */
-
-
-/* =========================================
-   1. MOBILE NAVIGATION
-========================================= */
-
-function toggleMenu() {
-
-    const nav = document.querySelector(".navbar nav");
-
-    if (nav) {
-        nav.classList.toggle("show");
-    }
-}
-
-
-/* =========================================
-   2. CLOSE MOBILE MENU
-   When user clicks a navigation link
-========================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const navLinks = document.querySelectorAll(".navbar nav a");
-
-    navLinks.forEach(function (link) {
-
-        link.addEventListener("click", function () {
-
-            const nav = document.querySelector(".navbar nav");
+            const nav =
+                document.querySelector(".navbar nav");
 
             if (nav) {
-                nav.classList.remove("show");
-            }
 
-        });
-
-    });
-
-});
-
-
-/* =========================================
-   3. EMERGENCY BUTTON
-========================================= */
-
-function emergencyCall() {
-
-    const confirmEmergency = confirm(
-        "Are you experiencing an emergency?\n\n" +
-        "Press OK to continue to emergency services."
-    );
-
-    if (confirmEmergency) {
-
-        window.location.href = "services.html";
-
-    }
-
-}
-
-
-/* =========================================
-   4. SHOW EMERGENCY MESSAGE
-========================================= */
-
-function showEmergencyMessage() {
-
-    alert(
-        "EmergencyConnect TZ\n\n" +
-        "Please select the emergency service you need."
-    );
-
-}
-
-
-/* =========================================
-   5. SMOOTH SCROLLING
-========================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    const links = document.querySelectorAll('a[href^="#"]');
-
-    links.forEach(function (link) {
-
-        link.addEventListener("click", function (event) {
-
-            const targetId = this.getAttribute("href");
-
-            if (targetId === "#") {
-                return;
-            }
-
-            const target = document.querySelector(targetId);
-
-            if (target) {
-
-                event.preventDefault();
-
-                target.scrollIntoView({
-                    behavior: "smooth",
-                    block: "start"
-                });
+                nav.classList.toggle("show");
+                nav.classList.toggle("nav-open");
 
             }
 
-        });
-
-    });
-
-});
+        }
 
 
-/* =========================================
-   6. CURRENT YEAR
-========================================= */
+        /* PAGE LOADED */
 
-document.addEventListener("DOMContentLoaded", function () {
-
-    const year = document.getElementById("year");
-
-    if (year) {
-
-        year.textContent = new Date().getFullYear();
-
-    }
-
-});
+        document.addEventListener(
+            "DOMContentLoaded",
+            function () {
 
 
-/* =========================================
-   7. SCROLL EFFECT FOR NAVBAR
-========================================= */
+                /* Close mobile menu */
 
-window.addEventListener("scroll", function () {
+                const navLinks =
+                    document.querySelectorAll(
+                        ".navbar nav a"
+                    );
 
-    const navbar = document.querySelector(".navbar");
+                navLinks.forEach(
+                    function (link) {
 
-    if (!navbar) {
-        return;
-    }
+                        link.addEventListener(
+                            "click",
+                            function () {
 
-    if (window.scrollY > 50) {
+                                const nav =
+                                    document.querySelector(
+                                        ".navbar nav"
+                                    );
 
-        navbar.classList.add("scrolled");
+                                if (nav) {
 
-    } else {
+                                    nav.classList.remove(
+                                        "show"
+                                    );
 
-        navbar.classList.remove("scrolled");
+                                    nav.classList.remove(
+                                        "nav-open"
+                                    );
 
-    }
+                                }
 
-});
+                            }
+                        );
+
+                    }
+                );
 
 
-/* =========================================
-   8. REVEAL ELEMENTS WHEN SCROLLING
-========================================= */
+                /* Current year */
 
-document.addEventListener("DOMContentLoaded", function () {
+                const year =
+                    document.getElementById("year");
 
-    const elements = document.querySelectorAll(
-        ".service-card, .feature-card, .step, .card"
-    );
+                if (year) {
 
-    const observer = new IntersectionObserver(
-        function (entries) {
-
-            entries.forEach(function (entry) {
-
-                if (entry.isIntersecting) {
-
-                    entry.target.classList.add("visible");
+                    year.textContent =
+                        new Date().getFullYear();
 
                 }
 
-            });
+            }
+        );
 
-        },
-        {
-            threshold: 0.15
+
+        /* EMERGENCY BUTTON */
+
+        function showEmergencyMessage() {
+
+            alert(
+                "EmergencyConnect TZ\n\n" +
+                "Please select the emergency service you need."
+            );
+
         }
-    );
 
 
-    elements.forEach(function (element) {
+        /* NAVBAR SCROLL EFFECT */
 
-        observer.observe(element);
+        window.addEventListener(
+            "scroll",
+            function () {
 
-    });
+                const navbar =
+                    document.querySelector(".navbar");
 
-});
+                if (navbar) {
 
+                    if (window.scrollY > 50) {
 
-/* =========================================
-   9. BACK TO TOP BUTTON
-========================================= */
+                        navbar.classList.add(
+                            "scrolled"
+                        );
 
-function scrollToTop() {
+                    } else {
 
-    window.scrollTo({
-        top: 0,
-        behavior: "smooth"
-    });
+                        navbar.classList.remove(
+                            "scrolled"
+                        );
 
-}
+                    }
 
+                }
 
-/* =========================================
-   10. ONLINE / OFFLINE STATUS
-========================================= */
+            }
+        );
 
-function updateConnectionStatus() {
-
-    if (navigator.onLine) {
-
-        console.log("Internet connection available.");
-
-    } else {
-
-        console.log("You are currently offline.");
-
-    }
-
-}
+    </script>
 
 
-window.addEventListener(
-    "online",
-    updateConnectionStatus
-);
+    <script src="main.js"></script>
 
-window.addEventListener(
-    "offline",
-    updateConnectionStatus
-);
-
-
-/* =========================================
-   11. PAGE LOADED MESSAGE
-========================================= */
-
-document.addEventListener("DOMContentLoaded", function () {
-
-    console.log(
-        "EmergencyConnect TZ loaded successfully."
-    );
-
-});></script>
 </body>
 </html>

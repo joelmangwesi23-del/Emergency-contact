@@ -195,3 +195,30 @@ function initNavbarScrollEffect() {
         });
     }
 }
+// Function ya kuvuta Navbar kutoka faili la navbar.html
+async function loadNavbar() {
+    const placeholder = document.getElementById("navbar-placeholder");
+    if (!placeholder) return;
+
+    try {
+        const response = await fetch("navbar.html");
+        if (response.ok) {
+            const navbarHTML = await response.text();
+            placeholder.innerHTML = navbarHTML;
+
+            // Baada ya navbar kujiweka, weka active link na tambua mobile menu
+            highlightActiveNavLink();
+            initMobileNav();
+            initTheme();
+        } else {
+            console.error("Ukurasa wa navbar.html haujapatikana.");
+        }
+    } catch (error) {
+        console.error("Kosa wakati wa kuvuta Navbar:", error);
+    }
+}
+
+// Hakikisha inajiendesha mara tu ukurasa unapoanza kuload
+document.addEventListener("DOMContentLoaded", () => {
+    loadNavbar();
+});

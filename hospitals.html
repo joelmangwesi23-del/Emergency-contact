@@ -1,0 +1,405 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Hospitals | EmergencyConnect TZ</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{font-family:Arial,Helvetica,sans-serif;background:#f7f8fa;color:#222;line-height:1.6}
+a{text-decoration:none}
+button{font-family:inherit}
+
+/* NAVBAR (same as About) */
+.navbar{height:75px;background:lightgray;display:flex;align-items:center;justify-content:space-between;padding:0 7%;position:sticky;top:0;z-index:1000;box-shadow:0 2px 15px rgba(0,0,0,.08)}
+.logo{font-size:22px;font-weight:800;color:#d71920;white-space:nowrap}
+.logo span{color:#222}
+nav{display:flex;align-items:center;gap:25px}
+nav a{color:#444;font-size:14px;font-weight:600;transition:.3s}
+nav a:hover,nav a.active{color:#d71920}
+.menu-btn{display:none;border:none;background:transparent;font-size:27px;cursor:pointer;color:#222}
+
+/* HERO (same as About) */
+.hero{min-height:590px;padding:90px 7%;display:flex;align-items:center;justify-content:space-between;gap:60px;position:relative;overflow:hidden;color:#fff;
+background-image:linear-gradient(90deg,rgba(0,0,0,.85) 0%,rgba(0,0,0,.72) 40%,rgba(0,0,0,.45) 70%,rgba(0,0,0,.25) 100%),url("https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=2200&q=90");
+background-size:cover;background-position:center;background-repeat:no-repeat}
+.hero::before{content:"";position:absolute;width:500px;height:500px;right:-180px;top:-200px;background:rgba(215,25,32,.22);border-radius:50%;filter:blur(90px);pointer-events:none}
+.hero-content{max-width:680px;position:relative;z-index:2}
+.badge{display:inline-flex;align-items:center;gap:6px;background:rgba(255,255,255,.96);color:#c1121f;padding:9px 17px;border-radius:30px;font-size:13px;font-weight:700;margin-bottom:22px;box-shadow:0 5px 20px rgba(0,0,0,.15)}
+.hero h1{font-size:58px;line-height:1.08;margin-bottom:25px;color:#fff;font-weight:800;letter-spacing:-1px;text-shadow:0 4px 15px rgba(0,0,0,.45)}
+.hero h1 span{display:block;color:#ff343c}
+.hero p{max-width:620px;font-size:18px;line-height:1.8;color:#fff;margin-bottom:32px;text-shadow:0 2px 8px rgba(0,0,0,.5)}
+.hero-buttons{display:flex;gap:15px;flex-wrap:wrap}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:14px 23px;border-radius:9px;font-size:15px;font-weight:700;transition:all .3s ease}
+.primary-btn{background:#d71920;color:#fff;box-shadow:0 8px 20px rgba(215,25,32,.35)}
+.primary-btn:hover{background:#b51218;transform:translateY(-3px)}
+.secondary-btn{background:transparent;color:#fff;border:2px solid #fff}
+.secondary-btn:hover{background:#d71920;border-color:#d71920;transform:translateY(-3px)}
+.hero-icon{position:relative;z-index:2;padding-right:4%;display:flex;align-items:center;justify-content:center}
+.emergency-circle{width:260px;height:260px;border-radius:50%;background:linear-gradient(145deg,#ed1c24,#a8070d);display:flex;align-items:center;justify-content:center;font-size:105px;border:10px solid rgba(255,255,255,.9);box-shadow:0 0 0 20px rgba(255,255,255,.15),0 20px 50px rgba(0,0,0,.4);animation:pulse 2.2s infinite}
+@keyframes pulse{0%,100%{transform:scale(1)}50%{transform:scale(1.05)}}
+
+/* SEARCH */
+.search-section{margin:-45px 7% 60px;position:relative;z-index:10}
+.search-box{background:lightgray;padding:25px;border-radius:16px;box-shadow:0 10px 30px rgba(0,0,0,.08)}
+.search-box h2{color:#181818;margin-bottom:18px}
+.search-controls{display:grid;grid-template-columns:2fr 1fr 1fr auto;gap:12px}
+.search-controls input,.search-controls select{width:100%;padding:14px;border:1px solid #d8dee5;border-radius:9px;font-size:15px;background:#fff;color:#222;font-family:inherit}
+.search-controls input:focus,.search-controls select:focus{outline:2px solid #d71920;border-color:#d71920}
+.search-btn{border:none;padding:14px 24px;background:#d71920;color:#fff;border-radius:9px;cursor:pointer;font-weight:700;transition:.3s}
+.search-btn:hover{background:#b51218}
+
+/* HOSPITALS */
+.hospitals-section{margin:0 7% 70px}
+.section-heading{text-align:center;margin-bottom:35px}
+.section-heading h2{font-size:34px;color:#181818;margin-bottom:8px}
+.section-heading p{color:#777}
+.hospital-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:25px}
+.hospital-card{background:lightgray;border-radius:14px;overflow:hidden;box-shadow:0 5px 20px rgba(0,0,0,.05);border:1px solid #eee;transition:.3s}
+.hospital-card:hover{transform:translateY(-8px);box-shadow:0 15px 35px rgba(0,0,0,.1)}
+.hospital-image{height:190px;position:relative;overflow:hidden}
+.hospital-image img{width:100%;height:100%;object-fit:cover;transition:.5s}
+.hospital-card:hover .hospital-image img{transform:scale(1.06)}
+.hospital-type{position:absolute;top:15px;right:15px;background:#d71920;color:#fff;padding:6px 12px;border-radius:20px;font-size:12px;font-weight:700}
+.hospital-info{padding:22px}
+.hospital-info h3{color:#181818;font-size:20px;margin-bottom:8px}
+.hospital-location{color:#555;margin-bottom:10px}
+.hospital-location span{color:#d71920;font-weight:700}
+.hospital-description{color:#666;font-size:14px;margin-bottom:18px}
+.hospital-actions{display:flex;gap:10px}
+.action-btn{flex:1;text-align:center;padding:11px;border-radius:9px;font-size:14px;font-weight:700;transition:.3s}
+.call-btn{background:#d71920;color:#fff}
+.call-btn:hover{background:#b51218}
+.map-btn{background:transparent;border:2px solid #d71920;color:#d71920}
+.map-btn:hover{background:#d71920;color:#fff}
+.no-results{display:none;text-align:center;padding:40px 20px;background:#fff;border-radius:14px;color:#666;margin-top:20px}
+
+/* EMERGENCY */
+.quick-emergency{margin:0 7% 70px;padding:38px 42px;background:linear-gradient(135deg,#151515,#252525);color:#fff;border-radius:16px;display:flex;align-items:center;justify-content:space-between;gap:25px;box-shadow:0 10px 30px rgba(0,0,0,.1)}
+.quick-emergency h2{font-size:25px;margin-bottom:6px}
+.quick-emergency p{color:#aaa}
+.emergency-btn{border:none;background:#d71920;color:#fff;padding:16px 26px;border-radius:9px;font-size:14px;font-weight:700;cursor:pointer;transition:.3s;white-space:nowrap}
+.emergency-btn:hover{background:#ff252d;transform:translateY(-3px)}
+
+/* STEPS */
+.how-section{background:#fff;padding:70px 7%}
+.steps{max-width:1000px;margin:auto;display:grid;grid-template-columns:repeat(3,1fr);gap:30px}
+.step{text-align:center;padding:30px}
+.step-number{width:55px;height:55px;margin:0 auto 20px;border-radius:50%;background:#d71920;color:#fff;display:flex;align-items:center;justify-content:center;font-weight:700}
+.step h3{margin-bottom:8px}
+.step p{color:#777;font-size:14px}
+
+/* FOOTER (same as About) */
+footer{background:#111;color:#fff;padding:50px 7% 20px}
+.footer-content{display:flex;justify-content:space-between;gap:50px;padding-bottom:30px}
+.footer-content h2{margin-bottom:10px}
+.footer-content p{color:#aaa;max-width:400px}
+.footer-links{display:flex;flex-direction:column;gap:8px}
+.footer-links h3{margin-bottom:5px}
+.footer-links a{color:#aaa;font-size:14px;transition:.3s}
+.footer-links a:hover{color:#fff}
+.copyright{border-top:1px solid #333;padding-top:20px;text-align:center;color:#777;font-size:13px}
+
+ /* ==========================================================================
+           DARK MODE STYLES
+           ========================================================================== */
+        body {
+            transition: background-color 0.3s ease, color 0.3s ease;
+        }
+
+        body.dark-mode {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
+
+        body.dark-mode .navbar,
+        body.dark-mode .service-card,
+        body.dark-mode .contact-card,
+        body.dark-mode .location-section,
+        body.dark-mode .search-container,
+        body.dark-mode .how-section {
+            background-color: #1e1e1e !important;
+            border-color: #333333 !important;
+            color: #ffffff !important;
+        }
+
+        body.dark-mode .section-title h2,
+        body.dark-mode .service-card h3,
+        body.dark-mode .contact-card h3 {
+            color: #ffffff !important;
+        }
+
+        body.dark-mode nav a {
+            color: #cccccc;
+        }
+
+        body.dark-mode .search-input,
+        body.dark-mode .select-input,
+        body.dark-mode .search-container input,
+        body.dark-mode .search-container select,
+        body.dark-mode .form-group input,
+        body.dark-mode .form-group select,
+        body.dark-mode .form-group textarea {
+            background-color: #2a2a2a;
+            color: #ffffff;
+            border-color: #444;
+        }
+
+        /* Theme Button in Navbar */
+        .theme-toggle-btn {
+            background: transparent;
+            border: none;
+            font-size: 20px;
+            cursor: pointer;
+            padding: 5px 10px;
+            border-radius: 50%;
+            transition: transform 0.2s;
+        }
+
+        .theme-toggle-btn:hover {
+            transform: scale(1.15);
+        }
+
+@media(max-width:1000px){
+.hero{padding:75px 6%}.hero h1{font-size:46px}
+.emergency-circle{width:220px;height:220px;font-size:85px}
+.search-controls{grid-template-columns:1fr 1fr}
+.hospital-grid{grid-template-columns:repeat(2,1fr)}
+}
+@media(max-width:700px){
+.navbar{padding:0 5%}.logo{font-size:18px}
+nav{display:none;position:absolute;top:75px;left:0;width:100%;background:#fff;padding:25px;flex-direction:column;gap:18px;box-shadow:0 5px 20px rgba(0,0,0,.12)}
+nav.nav-open{display:flex}
+.menu-btn{display:block}
+.hero{min-height:720px;padding:70px 5%;flex-direction:column;text-align:center;justify-content:center;gap:55px;background-position:65% center}
+.hero h1{font-size:38px}.hero p{font-size:16px;line-height:1.7}
+.hero-buttons{justify-content:center}
+.hero-icon{padding:0}
+.emergency-circle{width:180px;height:180px;font-size:65px;border-width:7px}
+.search-section{margin:-30px 5% 45px}
+.search-controls{grid-template-columns:1fr}
+.hospitals-section{margin:0 5% 50px}
+.hospital-grid{grid-template-columns:1fr}
+.quick-emergency{margin:0 5% 50px;padding:30px 20px;flex-direction:column;text-align:center}
+.emergency-btn{width:100%}
+.how-section{padding:60px 5%}
+.steps{grid-template-columns:1fr}
+.footer-content{flex-direction:column}
+}
+@media(max-width:400px){.hero h1{font-size:32px}.btn{width:100%}}
+</style>
+</head>
+<body>
+
+<header class="navbar">
+  <div class="logo">🚨 <span>EmergencyConnect</span> TZ</div>
+  <nav id="nav-links">
+    <a href="index.html">Home</a>
+    <a href="services.html">Services</a>
+    <a href="nearby.html">Nearby Help</a>
+    <a href="hospitals.html" class="active">Hospitals</a>
+    <a href="contacts.html">Emergency Contacts</a>
+    <a href="about.html">About</a>
+  </nav>
+  <button class="menu-btn" onclick="toggleMenu()" aria-label="Menu">☰</button>
+</header>
+
+<section class="hero">
+  <div class="hero-content">
+    <span class="badge">🏥 Healthcare Directory • Tanzania</span>
+    <h1>Find Hospitals &amp; <span>Medical Facilities.</span></h1>
+    <p>Locate national referral, zonal, regional, and private hospitals near you. Get direct lines for emergency response and ambulance services 24/7.</p>
+    <div class="hero-buttons">
+      <a href="#hospitals" class="btn primary-btn">🏥 Browse Hospitals</a>
+      <a href="contacts.html" class="btn secondary-btn">📞 Emergency Contacts</a>
+    </div>
+  </div>
+  <div class="hero-icon"><div class="emergency-circle">🏥</div></div>
+</section>
+
+<section class="search-section">
+  <div class="search-box">
+    <h2>Find a Hospital</h2>
+    <div class="search-controls">
+      <input type="text" id="hospitalSearch" placeholder="Search hospital or area..." aria-label="Search hospitals">
+      <select id="regionFilter" aria-label="Region">
+        <option value="all">All Regions</option>
+        <option value="dar">Dar es Salaam</option>
+        <option value="mwanza">Mwanza</option>
+        <option value="arusha">Arusha</option>
+        <option value="dodoma">Dodoma</option>
+      </select>
+      <select id="typeFilter" aria-label="Type">
+        <option value="all">All Types</option>
+        <option value="national">National</option>
+        <option value="zonal">Zonal</option>
+        <option value="private">Private</option>
+      </select>
+      <button class="search-btn" id="searchBtn">Search</button>
+    </div>
+  </div>
+</section>
+
+<section class="hospitals-section" id="hospitals">
+  <div class="section-heading">
+    <h2>Hospitals &amp; Medical Facilities</h2>
+    <p>Explore healthcare facilities available through EmergencyConnect TZ.</p>
+  </div>
+
+  <div class="hospital-grid" id="hospitalGrid">
+
+    <div class="hospital-card" data-name="Muhimbili National Hospital" data-region="dar" data-type="national">
+      <div class="hospital-image"><img src="https://images.unsplash.com/photo-1587351021759-3e566b6af7cc?auto=format&fit=crop&w=900&q=80" alt="Hospital building"><span class="hospital-type">NATIONAL</span></div>
+      <div class="hospital-info">
+        <h3>Muhimbili National Hospital</h3>
+        <div class="hospital-location">📍 <span>Dar es Salaam</span></div>
+        <p class="hospital-description">A major national referral and teaching hospital providing specialized medical services.</p>
+        <div class="hospital-actions">
+          <a href="tel:112" class="action-btn call-btn">📞 Call</a>
+          <a href="https://maps.google.com/?q=Muhimbili+National+Hospital" target="_blank" rel="noopener" class="action-btn map-btn">📍 Map</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hospital-card" data-name="Aga Khan Hospital" data-region="dar" data-type="private">
+      <div class="hospital-image"><img src="https://images.unsplash.com/photo-1519494026892-80bbd2d6fd0d?auto=format&fit=crop&w=900&q=80" alt="Modern hospital building"><span class="hospital-type">PRIVATE</span></div>
+      <div class="hospital-info">
+        <h3>Aga Khan Hospital</h3>
+        <div class="hospital-location">📍 <span>Dar es Salaam</span></div>
+        <p class="hospital-description">Private healthcare facility offering specialist and emergency medical services.</p>
+        <div class="hospital-actions">
+          <a href="tel:112" class="action-btn call-btn">📞 Call</a>
+          <a href="https://maps.google.com/?q=Aga+Khan+Hospital+Dar+es+Salaam" target="_blank" rel="noopener" class="action-btn map-btn">📍 Map</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hospital-card" data-name="Kairuki Hospital" data-region="dar" data-type="private">
+      <div class="hospital-image"><img src="https://images.unsplash.com/photo-1584982751601-97dcc096659c?auto=format&fit=crop&w=900&q=80" alt="Hospital exterior"><span class="hospital-type">PRIVATE</span></div>
+      <div class="hospital-info">
+        <h3>Kairuki Hospital</h3>
+        <div class="hospital-location">📍 <span>Dar es Salaam</span></div>
+        <p class="hospital-description">A private hospital providing general and specialized healthcare services.</p>
+        <div class="hospital-actions">
+          <a href="tel:112" class="action-btn call-btn">📞 Call</a>
+          <a href="https://maps.google.com/?q=Kairuki+Hospital" target="_blank" rel="noopener" class="action-btn map-btn">📍 Map</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hospital-card" data-name="Bugando Medical Centre" data-region="mwanza" data-type="zonal">
+      <div class="hospital-image"><img src="https://images.unsplash.com/photo-1538108149393-fbbd81895907?auto=format&fit=crop&w=900&q=80" alt="Medical facility"><span class="hospital-type">ZONAL</span></div>
+      <div class="hospital-info">
+        <h3>Bugando Medical Centre</h3>
+        <div class="hospital-location">📍 <span>Mwanza</span></div>
+        <p class="hospital-description">A zonal referral hospital serving patients from Mwanza and surrounding regions.</p>
+        <div class="hospital-actions">
+          <a href="tel:112" class="action-btn call-btn">📞 Call</a>
+          <a href="https://maps.google.com/?q=Bugando+Medical+Centre" target="_blank" rel="noopener" class="action-btn map-btn">📍 Map</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hospital-card" data-name="Mount Meru Hospital" data-region="arusha" data-type="zonal">
+      <div class="hospital-image"><img src="https://images.unsplash.com/photo-1576091160399-112ba8d25d1d?auto=format&fit=crop&w=900&q=80" alt="Hospital building exterior"><span class="hospital-type">ZONAL</span></div>
+      <div class="hospital-info">
+        <h3>Mount Meru Hospital</h3>
+        <div class="hospital-location">📍 <span>Arusha</span></div>
+        <p class="hospital-description">A major healthcare facility serving Arusha and nearby communities.</p>
+        <div class="hospital-actions">
+          <a href="tel:112" class="action-btn call-btn">📞 Call</a>
+          <a href="https://maps.google.com/?q=Mount+Meru+Hospital" target="_blank" rel="noopener" class="action-btn map-btn">📍 Map</a>
+        </div>
+      </div>
+    </div>
+
+    <div class="hospital-card" data-name="Benjamin Mkapa Hospital" data-region="dodoma" data-type="zonal">
+      <div class="hospital-image"><img src="mkapa.jpg" alt="Hospital exterior"><span class="hospital-type">ZONAL</span></div>
+      <div class="hospital-info">
+        <h3>Benjamin Mkapa Hospital</h3>
+        <div class="hospital-location">📍 <span>Dodoma</span></div>
+        <p class="hospital-description">A modern referral healthcare facility located in Dodoma.</p>
+        <div class="hospital-actions">
+          <a href="tel:112" class="action-btn call-btn">📞 Call</a>
+          <a href="https://maps.google.com/?q=Benjamin+Mkapa+Hospital" target="_blank" rel="noopener" class="action-btn map-btn">📍 Map</a>
+        </div>
+      </div>
+    </div>
+
+  </div>
+  <div class="no-results" id="noResults">No hospital matches your search. Clear a filter or try another name.</div>
+</section>
+
+<section class="quick-emergency">
+  <div>
+    <h2>Medical Emergency?</h2>
+    <p>If you or someone near you needs urgent medical assistance, contact emergency services immediately.</p>
+  </div>
+  <button class="emergency-btn" onclick="window.location.href='tel:112'">🚨 CALL 112 NOW</button>
+</section>
+
+<section class="how-section">
+  <div class="section-heading">
+    <h2>How EmergencyConnect TZ Works</h2>
+    <p>Find medical assistance in three simple steps.</p>
+  </div>
+  <div class="steps">
+    <div class="step"><div class="step-number">1</div><h3>Search</h3><p>Search for hospitals by name, location or healthcare facility type.</p></div>
+    <div class="step"><div class="step-number">2</div><h3>Choose</h3><p>Review available facilities and select the hospital that meets your needs.</p></div>
+    <div class="step"><div class="step-number">3</div><h3>Get Help</h3><p>Call emergency services or use the map to locate the selected healthcare facility.</p></div>
+  </div>
+</section>
+
+<footer>
+  <div class="footer-content">
+    <div>
+      <h2>🚨 EmergencyConnect TZ</h2>
+      <p>Connecting people with emergency services quickly and efficiently.</p>
+    </div>
+    <div class="footer-links">
+      <h3>Quick Links</h3>
+      <a href="services.html">Emergency Services</a>
+      <a href="nearby.html">Nearby Help</a>
+      <a href="hospitals.html">Hospitals</a>
+      <a href="contacts.html">Emergency Contacts</a>
+      <a href="about.html">About</a>
+      <a href="index.html">Home</a>
+    </div>
+  </div>
+  <div class="copyright">© 2026 EmergencyConnect TZ. All rights reserved.</div>
+</footer>
+
+<script>
+function toggleMenu(){document.getElementById("nav-links").classList.toggle("nav-open")}
+document.querySelectorAll("#nav-links a").forEach(function(l){
+  l.addEventListener("click",function(){document.getElementById("nav-links").classList.remove("nav-open")});
+});
+
+const searchInput=document.getElementById("hospitalSearch");
+const regionFilter=document.getElementById("regionFilter");
+const typeFilter=document.getElementById("typeFilter");
+const cards=document.querySelectorAll(".hospital-card");
+const noResults=document.getElementById("noResults");
+
+function filterHospitals(){
+  const q=searchInput.value.toLowerCase().trim();
+  let shown=0;
+  cards.forEach(function(card){
+    const text=(card.dataset.name+" "+card.querySelector(".hospital-location").textContent).toLowerCase();
+    const ok=text.includes(q)
+      &&(regionFilter.value==="all"||card.dataset.region===regionFilter.value)
+      &&(typeFilter.value==="all"||card.dataset.type===typeFilter.value);
+    card.style.display=ok?"block":"none";
+    if(ok)shown++;
+  });
+  noResults.style.display=shown?"none":"block";
+}
+document.getElementById("searchBtn").addEventListener("click",filterHospitals);
+searchInput.addEventListener("input",filterHospitals);
+regionFilter.addEventListener("change",filterHospitals);
+typeFilter.addEventListener("change",filterHospitals);
+</script>
+<script src="main.js"></script>
+</body>
+</html>
