@@ -1,0 +1,71 @@
+<!-- navbar.html -->
+
+<style>
+    .navbar {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 15px 7%;
+        background-color: #de8787;
+        box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+        position: sticky;
+        top: 0;
+        z-index: 1000;
+    }
+
+    #nav-links {
+        display: flex;
+        gap: 20px;
+    }
+
+    #nav-links a {
+        text-decoration: none;
+        color: #333;
+    }
+
+    #nav-links a.active {
+        color: #d71920;
+        font-weight: bold;
+    }
+
+    .menu-btn {
+        display: none;
+        font-size: 26px;
+        background: none;
+        border: none;
+    }
+
+    @media (max-width: 700px) {
+        .menu-btn { display: block !important; }
+        #nav-links {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            width: 100%;
+            background: #fff;
+            flex-direction: column;
+            padding: 20px;
+        }
+        #nav-links.active { display: flex !important; }
+    }
+</style>
+
+<!-- Muundo wa HTML wa Navbar -->
+<header class="navbar">
+    <div class="logo">
+        🚨 <span>EmergencyConnect</span> TZ
+    </div>
+
+    <nav id="nav-links">
+        <a href="index.html">Home</a>
+        <a href="services.html">Services</a>
+        <a href="nearby.html">Nearby Help</a>
+        <a href="hospitals.html">Hospitals</a>
+        <a href="contacts.html">Emergency Contacts</a>
+        <a href="about.html">About</a>
+    </nav>
+
+    <button class="menu-btn" onclick="toggleMenu()">☰</button>
+</header>
+</header>
