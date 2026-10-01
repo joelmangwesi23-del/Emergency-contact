@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <title>Jisajili - Emergency App</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; display: flex; justify-content: center; }
+    .form-box { width: 300px; display: flex; flex-direction: column; gap: 10px; }
+    input, button { padding: 10px; font-size: 16px; }
+    button { background-color: #28a745; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="form-box">
+    <h2>Tengeneza Akaunti</h2>
+    <input type="text" id="fullName" placeholder="Jina Bufe" required>
+    <input type="tel" id="phoneNumber" placeholder="Namba ya Simu" required>
+    <input type="email" id="email" placeholder="Barua Pepe (Email)" required>
+    <input type="password" id="password" placeholder="Nenosiri (Password)" required>
+    <button id="regBtn">Jisajili</button>
+    <p>Umeshajisajili? <a href="login.html">Ingia hapa</a></p>
+  </div>
+
+  <script type="module">
+    import { auth, db } from './firebase-config.js';
+    import { createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+    import { doc, setDoc } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-firestore.js";
+
+    document.getElementById('regBtn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const fullName = document.getElementById('fullName').value;
+      const phoneNumber = document.getElementById('phoneNumber').value;
+
+      if(!email || !password || !fullName) {
+        alert("Tafadhali jaza sehemu zote!");
+        return;
+      }
+
+      try {
+        // 1. Tengeneza user kwenye Authentication
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        const user = userCredential.user;
+
+        // 2. Hifadhi taarifa za ziada Firestore (ili wewe Admin uzione)
+        await setDoc(doc(db, "users", user.uid), {
+          uid: user.uid,
+          fullName: fullName,
+          phoneNumber: phoneNumber,
+          email: email,
+          createdAt: new Date()
+        });
+
+        alert("Usajili Umefanikiwa!");
+        window.location.href = "about.html"; // Mfano wa ukurasa wa kuelekea
+      } catch (error) {
+        alert("Kosa: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

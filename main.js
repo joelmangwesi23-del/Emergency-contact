@@ -720,3 +720,181 @@ document.addEventListener("DOMContentLoaded", function () {
     });
 
 });
+// =========================================
+// LANGUAGE SYSTEM
+// =========================================
+
+const translations = {
+
+    en: {
+
+        home: "Home",
+        services: "Services",
+        nearby: "Nearby Help",
+        hospitals: "Hospitals",
+        contacts: "Emergency Contacts",
+        about: "About",
+        call112: "🚨 Call 112",
+
+        detectLocation: "📍 Detect My Location",
+        yourLocation: "📍 Your Current Location",
+        openGoogleMaps: "🗺️ Open in Google Maps",
+
+        emergency: "Medical Emergency?",
+        findHospital: "Find a Hospital",
+        search: "Search",
+        choose: "Choose",
+        getHelp: "Get Help"
+
+    },
+
+    sw: {
+
+        home: "Mwanzo",
+        services: "Huduma",
+        nearby: "Msaada wa Karibu",
+        hospitals: "Hospitali",
+        contacts: "Mawasiliano ya Dharura",
+        about: "Kuhusu",
+        call112: "🚨 Piga 112",
+
+        detectLocation: "📍 Tambua Nilipo",
+        yourLocation: "📍 Mahali Nilipo Sasa",
+        openGoogleMaps: "🗺️ Fungua Google Maps",
+
+        emergency: "Dharura ya Kimatibabu?",
+        findHospital: "Tafuta Hospitali",
+        search: "Tafuta",
+        choose: "Chagua",
+        getHelp: "Pata Msaada"
+
+    }
+
+};
+
+
+// =========================================
+// CHANGE LANGUAGE
+// =========================================
+
+function changeLanguage(language) {
+
+    const elements =
+        document.querySelectorAll("[data-i18n]");
+
+    elements.forEach(function (element) {
+
+        const key =
+            element.getAttribute("data-i18n");
+
+        if (
+            translations[language] &&
+            translations[language][key]
+        ) {
+
+            element.textContent =
+                translations[language][key];
+
+        }
+
+    });
+
+
+    // Save selected language
+    localStorage.setItem(
+        "selectedLanguage",
+        language
+    );
+
+
+    // Update buttons
+    const englishBtn =
+        document.getElementById("englishBtn");
+
+    const swahiliBtn =
+        document.getElementById("swahiliBtn");
+
+
+    if (englishBtn && swahiliBtn) {
+
+        englishBtn.classList.remove("active");
+        swahiliBtn.classList.remove("active");
+
+
+        if (language === "en") {
+
+            englishBtn.classList.add("active");
+
+        } else {
+
+            swahiliBtn.classList.add("active");
+
+        }
+
+    }
+
+}
+
+
+// =========================================
+// LANGUAGE BUTTONS
+// =========================================
+
+document.addEventListener(
+    "DOMContentLoaded",
+    function () {
+
+        const englishBtn =
+            document.getElementById("englishBtn");
+
+        const swahiliBtn =
+            document.getElementById("swahiliBtn");
+
+
+        if (englishBtn) {
+
+            englishBtn.addEventListener(
+                "click",
+                function () {
+
+                    changeLanguage("en");
+
+                }
+            );
+
+        }
+
+
+        if (swahiliBtn) {
+
+            swahiliBtn.addEventListener(
+                "click",
+                function () {
+
+                    changeLanguage("sw");
+
+                }
+            );
+
+        }
+
+
+        // Load saved language
+        const savedLanguage =
+            localStorage.getItem(
+                "selectedLanguage"
+            );
+
+
+        if (savedLanguage) {
+
+            changeLanguage(savedLanguage);
+
+        } else {
+
+            changeLanguage("en");
+
+        }
+
+    }
+);

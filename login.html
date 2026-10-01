@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+  <meta charset="UTF-8">
+  <title>Ingia - Emergency App</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 20px; display: flex; justify-content: center; }
+    .form-box { width: 300px; display: flex; flex-direction: column; gap: 10px; }
+    input, button { padding: 10px; font-size: 16px; }
+    button { background-color: #007bff; color: white; border: none; cursor: pointer; }
+  </style>
+</head>
+<body>
+
+  <div class="form-box">
+    <h2>Ingia Kwenye App</h2>
+    <input type="email" id="email" placeholder="Email" required>
+    <input type="password" id="password" placeholder="Password" required>
+    <button id="loginBtn">Ingia</button>
+    <p>Huna akaunti? <a href="register.html">Jisajili hapa</a></p>
+  </div>
+
+  <script type="module">
+    import { auth } from './firebase-config.js';
+    import { signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.8.0/firebase-auth.js";
+
+    document.getElementById('loginBtn').addEventListener('click', async () => {
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+
+      try {
+        await signInWithEmailAndPassword(auth, email, password);
+        alert("Umeingia kikamilifu!");
+        window.location.href = "about.html";
+      } catch (error) {
+        alert("Kosa la Kuingia: " + error.message);
+      }
+    });
+  </script>
+</body>
+</html>

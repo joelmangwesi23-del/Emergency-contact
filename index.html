@@ -166,6 +166,54 @@
             font-size: 25px;
             cursor: pointer;
         }
+        /* =========================================
+   LANGUAGE SWITCHER
+========================================= */
+
+.language-switcher {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+}
+
+.lang-btn {
+    border: none;
+    background: transparent;
+    color: #243746;
+    font-weight: 700;
+    font-size: 14px;
+    cursor: pointer;
+    padding: 5px 7px;
+    border-radius: 5px;
+}
+
+.lang-btn:hover {
+    color: #d71920;
+}
+
+.lang-btn.active {
+    background: #d71920;
+    color: white;
+}
+
+
+/* Mobile */
+
+@media (max-width: 900px) {
+
+    .language-switcher {
+        width: 100%;
+        margin-top: 5px;
+        padding-top: 10px;
+        border-top: 1px solid #eeeeee;
+    }
+
+    .lang-btn {
+        font-size: 14px;
+    }
+
+}
 
 
         /* =========================================================
@@ -885,6 +933,11 @@
             <a href="contacts.html">Emergency Contacts</a>
             <a href="about.html">About</a>
         </nav>
+        <li class="language-switcher">
+    <button id="englishBtn" class="lang-btn active">EN</button>
+    <span>|</span>
+    <button id="swahiliBtn" class="lang-btn">SW</button>
+</li>
 
         <button class="menu-btn" onclick="toggleMenu()">☰</button>
 
@@ -1401,6 +1454,18 @@
 
 
     <script src="main.js"></script>
+    <script src="language.js"></script>
+    <h1 data-i18n="heroTitle">
+    Emergency Help When You Need It Most
+</h1>
+
+<p data-i18n="heroDescription">
+    Quickly find hospitals, emergency services and nearby help in Tanzania.
+</p>
+
+<button data-i18n="findNearby">
+    📍 Find Nearby Help
+</button>
 
 </body>
 </html>
